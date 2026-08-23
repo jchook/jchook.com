@@ -1,0 +1,58 @@
+---
+import "@fontsource-variable/inconsolata/wdth.css";
+import "katex/dist/katex.min.css";
+import "../styles/global.css";
+import Masthead from "../components/Masthead.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const fullTitle = title ? `${title} · jchook.com` : "jchook.com · Wes Roberts";
+const desc =
+  description ??
+  "Short posts on Void Linux, xmonad, Rust, and whatever else is on the workbench. By Wes Roberts (@jchook).";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <meta name="author" content="Wes Roberts" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="jchook.com"
+      href={new URL("rss.xml", Astro.site)}
+    />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <Masthead />
+    <main class="shell">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="spectrum" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="colophon">
+        <span>© 2026 Wes Roberts</span>
+        <span>
+          <a href="https://github.com/jchook" rel="me">github</a> ·
+          <a href="https://www.linkedin.com/in/wesleyroberts42" rel="me">linkedin</a>
+          · <a href="/rss.xml">rss</a>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>

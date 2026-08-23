@@ -1,0 +1,45 @@
+---
+import type { Post } from "../lib/posts";
+import { formatPostDate } from "../lib/dates";
+import TagPill from "./TagPill.astro";
+
+interface Props {
+  post: Post;
+  /** true when rendered on the homepage (title links to the canonical URL) */
+  link?: boolean;
+}
+
+const { post, link = false } = Astro.props;
+const { title, date, tz, author, tags } = post.data;
+---
+
+<header class="post-header">
+  <div class="prompt-line">
+    <span class="caret">❯</span>
+    <a class="who" href="/about/">{author}</a>
+    <span class="at">·</span>
+    <time datetime={date.replace(" ", "T")}>{formatPostDate(date, tz)}</time>
+  </div>
+  <h1>
+    {link ? <a href={`/posts/${post.id}/`}>{title}</a> : title}
+  </h1>
+  {
+    tags.length > 0 && (
+      <div class="tags">
+        {tags.map((t) => (
+          <TagPill tag={t} />
+        ))}
+      </div>
+    )
+  }
+</header>
+
+<style>
+  h1 a {
+    color: inherit;
+  }
+  h1 a:hover {
+    color: var(--yellow);
+    text-decoration: none;
+  }
+</style>

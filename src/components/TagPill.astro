@@ -1,0 +1,14 @@
+---
+import { tagColor } from "../lib/tags";
+
+interface Props {
+  tag: string;
+  count?: number;
+}
+
+const { tag, count } = Astro.props;
+---
+
+<a class="tag" href={`/tags/${tag}/`} style={`--tc: ${tagColor(tag)}`}>
+  <span>{tag}{count !== undefined && <span class="count">×{count}</span>}</span>
+</a>

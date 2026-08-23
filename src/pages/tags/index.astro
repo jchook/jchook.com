@@ -1,0 +1,24 @@
+---
+import Base from "../../layouts/Base.astro";
+import TagPill from "../../components/TagPill.astro";
+import { getPosts, allTags } from "../../lib/posts";
+
+const tags = allTags(await getPosts());
+---
+
+<Base title="tags" description="Browse posts by tag.">
+  <h1 class="page-title">tags</h1>
+  <div class="tag-cloud">
+    {[...tags.entries()].map(([t, n]) => <TagPill tag={t} count={n} />)}
+  </div>
+</Base>
+
+<style>
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    max-width: var(--prose-w);
+    font-size: 1.1rem;
+  }
+</style>

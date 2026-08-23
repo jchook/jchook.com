@@ -1,0 +1,889 @@
+/* ──────────────────────────────────────────────────────────────
+   jchook.com — gruvbox, tuned to kitty.conf + the hydrogen wallpaper
+
+   Type system: one face (Inconsolata Variable), three voices.
+   · display  — stretch 115%, weight 900, tight leading. Racing plates.
+   · body     — stretch 100%, weight 400, tall leading. The terminal.
+   · eyebrow  — stretch 95%, wide tracking, small. Quiet labels.
+   ────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ink */
+  --bg0: #1d1d1d; /* page (wallpaper black) */
+  --bg1: #262626; /* kitty background — panels, code */
+  --bg2: #3a3a3a; /* raised */
+  --bg3: #4e4e4e; /* borders */
+  /* text */
+  --fg0: #ebdbb2; /* bright — headings */
+  --fg1: #dab997; /* kitty foreground — body */
+  --fg2: #d5c4a1; /* dim */
+  --muted: #949494;
+  --faint: #8a8a8a;
+  /* accents (kitty color1..color16) */
+  --red: #d75f5f;
+  --green: #afaf00;
+  --yellow: #ffaf00;
+  --blue: #83adad;
+  --magenta: #d485ad;
+  --aqua: #85ad85;
+  --orange: #ff8700;
+  --orange-dim: #d65d0e;
+
+  --mono: "Inconsolata Variable", "Inconsolata", ui-monospace, "SFMono-Regular",
+    Menlo, monospace;
+  --mast-h: 4.25rem;
+  --content-w: 74rem;
+  --prose-w: 42rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg0);
+  color-scheme: dark;
+  scrollbar-color: var(--bg3) var(--bg0);
+}
+
+body {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--fg1);
+  background: var(--bg0);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+::selection {
+  background: var(--fg1);
+  color: var(--bg1);
+}
+
+a {
+  color: var(--yellow);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--fg0);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.25em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* the three voices */
+.display,
+.post-header h1,
+.page-title,
+.prose h2,
+.prose h3 {
+  font-stretch: 115%;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  /* mono spaces stretch with the font — pull word gaps back in */
+  word-spacing: -0.35em;
+  color: var(--fg0);
+}
+
+.eyebrow,
+.rail-section h2,
+.pager .dir,
+.year-h,
+.prompt-line {
+  font-stretch: 95%;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  color: var(--muted);
+}
+
+/* ── masthead ─────────────────────────────────────────────── */
+
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg0) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--bg2);
+}
+
+.masthead-inner {
+  --mast-gap: 1.5rem;
+  display: flex;
+  align-items: stretch;
+  gap: var(--mast-gap);
+  height: var(--mast-h);
+  padding-right: 2rem; /* matches .shell side padding */
+}
+
+/* the speed-stack: hydrogen spectral lines, italicized into racing
+   quadrilaterals, bleeding off the left edge of the screen */
+.speedstack {
+  display: flex;
+  align-items: stretch;
+  align-self: stretch;
+  flex-shrink: 0;
+  margin-left: -0.5rem;
+  transform: skewX(-18deg);
+}
+.speedstack i {
+  display: block;
+  width: 0.5rem;
+  height: 100%;
+}
+.speedstack i:nth-child(1) { background: var(--blue); margin-right: 1.4rem; }
+.speedstack i:nth-child(2) { background: var(--red); margin-right: 0.7rem; }
+.speedstack i:nth-child(3) { background: var(--yellow); margin-right: 0.28rem; }
+.speedstack i:nth-child(4) { background: var(--fg0); margin-right: 0.28rem; }
+.speedstack i:nth-child(5) { background: var(--green); margin-right: 0.28rem; }
+.speedstack i:nth-child(6) { background: var(--aqua); }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--fg0);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.brand:hover {
+  text-decoration: none;
+  color: var(--fg0);
+}
+
+/* the WR mark: the fused seal monogram, stamped bare in gruvbox green —
+   no block behind it, just inked strokes with stamp grain */
+.logo-badge {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  color: var(--green);
+  filter: url(#seal-rough);
+  transition: color 120ms;
+}
+.logo-badge svg {
+  display: block;
+}
+.brand:hover .logo-badge {
+  color: var(--yellow);
+}
+.brand .site {
+  font-size: 1.05rem;
+}
+.brand .site::after {
+  content: "_";
+  margin-left: 0.45ch;
+  color: var(--yellow);
+  animation: caret 1.1s steps(1) infinite;
+}
+@keyframes caret {
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand .site::after { animation: none; }
+}
+
+.mast-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--mast-gap);
+  margin-left: auto;
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+}
+.mast-nav a {
+  color: var(--fg2);
+}
+.mast-nav a .tilde {
+  color: var(--faint);
+}
+.mast-nav a:hover {
+  color: var(--yellow);
+  text-decoration: none;
+}
+.mast-nav a[aria-current="page"] {
+  color: var(--yellow);
+}
+
+.mast-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.mast-actions a {
+  color: var(--muted);
+  display: grid;
+  place-items: center;
+}
+.mast-actions a:hover {
+  color: var(--fg0);
+}
+.mast-actions svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+/* ── page shell / two-column ──────────────────────────────── */
+
+.shell {
+  width: 100%;
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 4.5rem 2rem 7rem;
+  flex: 1;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16rem;
+  gap: 5.5rem;
+  align-items: start;
+}
+
+/* ── sidebar ──────────────────────────────────────────────── */
+
+.rail {
+  position: sticky;
+  top: calc(var(--mast-h) + 3rem);
+  display: flex;
+  flex-direction: column;
+  gap: 2.75rem;
+  font-size: 0.88rem;
+}
+.rail-section h2 {
+  margin: 0 0 1rem;
+}
+.rail-section h2::before {
+  content: "# ";
+  color: var(--green);
+}
+.rail-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.rail-section li a {
+  color: var(--fg2);
+  display: block;
+  line-height: 1.55;
+}
+.rail-section li a:hover {
+  color: var(--yellow);
+  text-decoration: none;
+}
+.rail-section li .when {
+  display: block;
+  color: var(--faint);
+  font-size: 0.78rem;
+  margin-top: 0.1rem;
+}
+.rail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ── tags ─────────────────────────────────────────────────── */
+
+.tag {
+  --tc: var(--yellow);
+  display: inline-block;
+  transform: skewX(-12deg);
+  border-left: 2px solid var(--tc);
+  background: color-mix(in srgb, var(--tc) 13%, transparent);
+  padding: 0.05rem 0.6rem;
+  font-size: 0.78rem;
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+  color: var(--tc);
+}
+.tag > span {
+  display: inline-block;
+  transform: skewX(12deg);
+}
+.tag:hover {
+  text-decoration: none;
+  background: color-mix(in srgb, var(--tc) 24%, transparent);
+  color: var(--tc);
+}
+.tag .count {
+  color: var(--muted);
+  margin-left: 0.35rem;
+}
+
+/* ── post header / meta prompt ────────────────────────────── */
+
+.post-header {
+  margin-bottom: 4rem;
+}
+.post-header .prompt-line {
+  font-size: 0.8rem;
+}
+.post-header h1 {
+  margin: 1rem 0 0;
+  font-size: clamp(2rem, 5.5vw, 3.4rem);
+  line-height: 1.04;
+}
+.prompt-line .caret {
+  color: var(--green);
+  font-weight: 800;
+}
+.prompt-line .who {
+  color: var(--aqua);
+}
+.prompt-line a.who:hover {
+  color: var(--yellow);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+.prompt-line .at {
+  color: var(--faint);
+}
+.post-header .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1.6rem;
+}
+
+/* ── prose ────────────────────────────────────────────────── */
+
+.prose {
+  max-width: var(--prose-w);
+}
+.prose > * {
+  margin-block: 0 1.5rem;
+}
+.prose p {
+  line-height: 1.85;
+}
+.prose h2,
+.prose h3 {
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.prose h2 {
+  font-size: 1.5rem;
+  margin: 3.5rem 0 1.25rem;
+}
+.prose h3 {
+  font-size: 1.15rem;
+  margin: 2.75rem 0 1rem;
+}
+.prose h2::before,
+.prose h3::before {
+  color: var(--green);
+  font-weight: 400;
+  font-stretch: 100%;
+  /* real margin, not a word space — the display voice's negative
+     word-spacing would otherwise crush it */
+  margin-right: 0.7ch;
+}
+.prose h2::before {
+  content: "##";
+}
+.prose h3::before {
+  content: "###";
+}
+.prose strong {
+  color: var(--fg0);
+}
+.prose em {
+  color: var(--fg2);
+}
+.prose code {
+  background: var(--bg2);
+  color: var(--fg0);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  font-size: 0.92em;
+}
+.prose pre {
+  background: var(--bg1) !important;
+  border: 1px solid var(--bg2);
+  border-radius: 6px;
+  padding: 1.3rem 1.5rem;
+  margin-block: 2.25rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+.prose pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+.prose blockquote {
+  margin: 2.25rem 0;
+  padding: 0.25rem 0 0.25rem 1.4rem;
+  border-left: 3px solid var(--bg3);
+  color: var(--fg2);
+}
+.prose blockquote > :last-child {
+  margin-bottom: 0;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem;
+}
+.prose li {
+  margin-bottom: 0.5rem;
+}
+.prose li::marker {
+  color: var(--muted);
+}
+.prose img,
+.prose video {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--bg2);
+  border-radius: 6px;
+  margin-block: 2.25rem;
+}
+.prose table {
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  margin-block: 2.25rem;
+  font-size: 0.9rem;
+}
+.prose th,
+.prose td {
+  border: 1px solid var(--bg2);
+  padding: 0.55rem 1rem;
+  text-align: left;
+}
+.prose th {
+  color: var(--fg0);
+  background: var(--bg1);
+}
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.6rem 0;
+  margin-block: 2.25rem;
+}
+.prose .katex {
+  color: var(--fg0);
+}
+
+/* hr as a mini hydrogen spectrum */
+.prose hr {
+  border: none;
+  height: 1rem;
+  margin: 4rem 0;
+  background:
+    linear-gradient(var(--blue), var(--blue)) 21% 50% / 3px 100%,
+    linear-gradient(var(--red), var(--red)) 52% 50% / 3px 100%,
+    linear-gradient(var(--yellow), var(--yellow)) 60% 50% / 3px 100%,
+    linear-gradient(var(--fg0), var(--fg0)) 64% 50% / 3px 100%,
+    linear-gradient(var(--green), var(--green)) 67.2% 50% / 3px 100%,
+    linear-gradient(var(--aqua), var(--aqua)) 70% 50% / 3px 100%;
+  background-repeat: no-repeat;
+}
+
+/* ── pager (older / newer) ────────────────────────────────── */
+
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 5.5rem;
+  max-width: var(--prose-w);
+  font-size: 0.9rem;
+}
+.pager a {
+  border: 1px solid var(--bg2);
+  padding: 1rem 1.25rem;
+  color: var(--fg2);
+  display: block;
+  line-height: 1.5;
+}
+.pager a:hover {
+  text-decoration: none;
+  border-color: var(--yellow);
+  color: var(--fg0);
+}
+.pager .dir {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+.pager .next {
+  text-align: right;
+}
+.pager .spacer {
+  visibility: hidden;
+}
+
+/* ── lists (archive, tag pages) ───────────────────────────── */
+
+.post-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 56rem;
+}
+.post-list li {
+  display: flex;
+  gap: 1.5rem;
+  align-items: baseline;
+  padding: 0.85rem 0;
+  border-bottom: 1px dashed var(--bg2);
+}
+.post-list .when {
+  color: var(--faint);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.post-list a {
+  color: var(--fg2);
+}
+.post-list a:hover {
+  color: var(--yellow);
+  text-decoration: none;
+}
+.post-list .dots {
+  flex: 1;
+  border-bottom: 1px dotted var(--bg2);
+  transform: translateY(-0.3em);
+  min-width: 1rem;
+}
+.post-list .mini-tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.page-title {
+  font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+  margin: 0 0 3rem;
+  line-height: 1.1;
+}
+.page-title::before {
+  content: "~/";
+  color: var(--faint);
+  font-weight: 400;
+  font-stretch: 100%;
+}
+.year-h {
+  margin: 3.25rem 0 1rem;
+}
+
+/* ── footer: the wallpaper itself ─────────────────────────── */
+
+.site-footer {
+  border-top: 1px solid var(--bg2);
+  background: var(--bg0);
+  margin-top: 2rem;
+}
+.spectrum {
+  position: relative;
+  height: 9.5rem;
+  max-width: var(--content-w);
+  margin: 0 auto;
+}
+.spectrum i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.55rem;
+  height: 3.4rem;
+  border-radius: 0.3rem;
+}
+.spectrum i:nth-child(1) { left: 21%; background: var(--blue); }
+.spectrum i:nth-child(2) { left: 51.9%; background: var(--red); }
+.spectrum i:nth-child(3) { left: 60.2%; background: var(--yellow); }
+.spectrum i:nth-child(4) { left: 64.4%; background: var(--fg0); }
+.spectrum i:nth-child(5) { left: 67.2%; background: var(--green); }
+.spectrum i:nth-child(6) { left: 69.7%; background: var(--aqua); }
+
+.colophon {
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 0 2rem 2.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  color: var(--faint);
+}
+.colophon a {
+  color: var(--muted);
+}
+.colophon a:hover {
+  color: var(--yellow);
+}
+
+/* ── search ───────────────────────────────────────────────── */
+
+.search-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--bg1);
+  border: 1px solid var(--bg2);
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.search-btn:hover {
+  border-color: var(--bg3);
+  color: var(--fg2);
+}
+.search-btn kbd {
+  font: inherit;
+  font-size: 0.75rem;
+  border: 1px solid var(--bg3);
+  border-radius: 3px;
+  padding: 0 0.3rem;
+  color: var(--fg2);
+}
+
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--bg0) 72%, transparent);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 10vh 1rem 0;
+}
+.search-panel {
+  width: 100%;
+  max-width: 38rem;
+  background: var(--bg1);
+  border: 1px solid var(--bg3);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgb(0 0 0 / 0.5);
+}
+.search-titlebar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0.9rem;
+  background: var(--bg2);
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+.search-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--bg2);
+}
+.search-input-row .caret {
+  color: var(--green);
+  font-weight: 800;
+}
+.search-input-row input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font: inherit;
+  color: var(--fg0);
+  caret-color: var(--yellow);
+}
+.search-results {
+  max-height: 50vh;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+}
+.search-results li a {
+  display: block;
+  padding: 0.6rem 0.75rem;
+  border-radius: 4px;
+  color: var(--fg2);
+}
+.search-results li a:hover,
+.search-results li.active a {
+  background: var(--bg2);
+  color: var(--fg0);
+  text-decoration: none;
+}
+.search-results .r-title {
+  color: var(--fg0);
+  font-weight: 700;
+}
+.search-results li.active .r-title {
+  color: var(--yellow);
+}
+.search-results .r-excerpt {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-top: 0.15rem;
+}
+.search-results .r-excerpt mark {
+  background: none;
+  color: var(--orange);
+  font-weight: 700;
+}
+.search-empty {
+  padding: 1.25rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.search-hints {
+  display: flex;
+  gap: 1.25rem;
+  padding: 0.5rem 1.1rem;
+  border-top: 1px solid var(--bg2);
+  color: var(--faint);
+  font-size: 0.75rem;
+}
+.search-hints kbd {
+  font: inherit;
+  color: var(--fg2);
+}
+
+/* ── demos ────────────────────────────────────────────────── */
+
+.demo-frame {
+  border: 1px solid var(--bg2);
+  border-radius: 6px;
+  background: var(--bg1);
+  overflow: hidden;
+  margin: 2.25rem 0;
+}
+.demo-frame canvas {
+  display: block;
+}
+.demo-caption {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  border-top: 1px solid var(--bg2);
+}
+
+/* ── responsive ───────────────────────────────────────────── */
+
+@media (max-width: 60rem) {
+  .two-col {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4rem;
+  }
+  .rail {
+    position: static;
+    border-top: 1px solid var(--bg2);
+    padding-top: 2rem;
+  }
+  .mast-nav {
+    gap: 1rem;
+    font-size: 0.85rem;
+  }
+  .brand .site {
+    display: none;
+  }
+}
+
+/* phones: masthead wraps to two rows — brand + icons, then the nav */
+@media (max-width: 46rem) {
+  :root {
+    --mast-h: 3.75rem;
+  }
+  body {
+    font-size: 1rem;
+  }
+  .shell {
+    padding: 2.75rem 1.25rem 4.5rem;
+  }
+  .masthead-inner {
+    --mast-gap: 1rem;
+    flex-wrap: wrap;
+    height: auto;
+    gap: 0.25rem var(--mast-gap);
+    padding-right: 1.25rem; /* matches mobile .shell side padding */
+  }
+  .speedstack,
+  .brand {
+    align-self: auto;
+    height: var(--mast-h);
+  }
+  .mast-actions {
+    margin-left: auto;
+  }
+  .search-btn kbd {
+    display: none;
+  }
+  .mast-nav {
+    order: 3;
+    flex-basis: 100%;
+    margin-left: 0;
+    /* left-aligns the nav row with the page content below it */
+    padding: 0 0 0.8rem 1.25rem;
+    gap: 1.1rem;
+  }
+  .post-header {
+    margin-bottom: 3rem;
+  }
+  .post-list li {
+    flex-wrap: wrap;
+    gap: 0.35rem 0.75rem;
+    padding: 0.8rem 0;
+  }
+  .post-list .dots {
+    display: none;
+  }
+  .post-list a {
+    flex-basis: 100%;
+    order: -1;
+  }
+  .prose pre {
+    padding: 1rem 1.1rem;
+    font-size: 0.85rem;
+  }
+  .prose hr {
+    margin: 3rem 0;
+  }
+  .pager {
+    margin-top: 4rem;
+  }
+  .spectrum {
+    height: 6rem;
+  }
+  .spectrum i {
+    width: 0.4rem;
+    height: 2.4rem;
+  }
+}
+
+@media (max-width: 34rem) {
+  .pager {
+    grid-template-columns: 1fr;
+  }
+  .pager .spacer {
+    display: none;
+  }
+  .pager .next {
+    text-align: left;
+  }
+}

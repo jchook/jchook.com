@@ -1,0 +1,98 @@
+---
+import type { Post, PostNeighbors } from "../lib/posts";
+import { formatPostDay } from "../lib/dates";
+import TagPill from "./TagPill.astro";
+
+interface Props {
+  neighbors?: PostNeighbors;
+  related?: Post[];
+  recent?: Post[];
+  tags?: Map<string, number>;
+}
+
+const { neighbors, related = [], recent = [], tags } = Astro.props;
+const topTags = tags ? [...tags.entries()].slice(0, 10) : [];
+---
+
+<aside class="rail">
+  {
+    neighbors && (neighbors.newer || neighbors.older) && (
+      <section class="rail-section">
+        <h2>continue</h2>
+        <ul>
+          {neighbors.newer && (
+            <li>
+              <a href={`/posts/${neighbors.newer.id}/`}>
+                ‹ {neighbors.newer.data.title}
+                <span class="when">{formatPostDay(neighbors.newer.data.date)}</span>
+              </a>
+            </li>
+          )}
+          {neighbors.older && (
+            <li>
+              <a href={`/posts/${neighbors.older.id}/`}>
+                › {neighbors.older.data.title}
+                <span class="when">{formatPostDay(neighbors.older.data.date)}</span>
+              </a>
+            </li>
+          )}
+        </ul>
+      </section>
+    )
+  }
+  {
+    related.length > 0 && (
+      <section class="rail-section">
+        <h2>related</h2>
+        <ul>
+          {related.map((p) => (
+            <li>
+              <a href={`/posts/${p.id}/`}>
+                {p.data.title}
+                <span class="when">{formatPostDay(p.data.date)}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+  {
+    recent.length > 0 && (
+      <section class="rail-section">
+        <h2>recent</h2>
+        <ul>
+          {recent.map((p) => (
+            <li>
+              <a href={`/posts/${p.id}/`}>
+                {p.data.title}
+                <span class="when">{formatPostDay(p.data.date)}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+  <section class="rail-section">
+    <h2>nav</h2>
+    <ul>
+      <li><a href="/posts/">~/posts</a></li>
+      <li><a href="/projects/">~/projects</a></li>
+      <li><a href="/about/">~/about</a></li>
+      <li><a href="/rss.xml">~/rss.xml</a></li>
+    </ul>
+  </section>
+  {
+    topTags.length > 0 && (
+      <section class="rail-section">
+        <h2>tags</h2>
+        <div class="rail-tags">
+          {topTags.map(([t, n]) => (
+            <TagPill tag={t} count={n} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+</aside>

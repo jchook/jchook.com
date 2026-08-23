@@ -1,0 +1,32 @@
+---
+import { render } from "astro:content";
+import Base from "../layouts/Base.astro";
+import PostHeader from "../components/PostHeader.astro";
+import Pager from "../components/Pager.astro";
+import Sidebar from "../components/Sidebar.astro";
+import { getPosts, relatedTo, allTags } from "../lib/posts";
+
+const posts = await getPosts();
+const latest = posts[0];
+if (!latest) throw new Error("No posts yet — run `bun run new \"Title\"`.");
+const { Content } = await render(latest);
+const related = relatedTo(posts, latest);
+const relatedIds = new Set(related.map((p) => p.id));
+const recent = posts
+  .slice(1)
+  .filter((p) => !relatedIds.has(p.id))
+  .slice(0, 5);
+---
+
+<Base description={latest.data.description}>
+  <div class="two-col">
+    <article>
+      <PostHeader post={latest} link />
+      <div class="prose">
+        <Content />
+      </div>
+      <Pager newer={undefined} older={posts[1]} />
+    </article>
+    <Sidebar related={related} recent={recent} tags={allTags(posts)} />
+  </div>
+</Base>

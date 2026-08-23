@@ -1,0 +1,120 @@
+---
+import Base from "../layouts/Base.astro";
+import { tagColor } from "../lib/tags";
+
+const projects = [
+  {
+    name: "ranger-zoxide",
+    lang: "python",
+    stars: 139,
+    url: "https://github.com/jchook/ranger-zoxide",
+    desc: "Jump between common directories in ranger with zoxide.",
+  },
+  {
+    name: "shhh",
+    lang: "rust",
+    stars: 3,
+    url: "https://github.com/jchook/shhh",
+    desc: "Alerts you when you are too loud. A noise meter for your mic.",
+  },
+  {
+    name: "rewait",
+    lang: "javascript",
+    stars: 4,
+    url: "https://github.com/jchook/rewait",
+    desc: "Wait for resources to become available — http, tcp, sockets, files, custom functions.",
+  },
+  {
+    name: "hngram",
+    lang: "rust",
+    url: "https://github.com/jchook/hngram",
+    desc: "Hacker News n-gram viewer.",
+  },
+  {
+    name: "caption-tui",
+    lang: "typescript",
+    url: "https://github.com/jchook/caption-tui",
+    desc: "Terminal-based image dataset captioning tool.",
+  },
+  {
+    name: "SCFusion",
+    lang: "cpp",
+    url: "https://github.com/jchook/SCFusion",
+    desc: "StarCraft 2 genetic build-order generator.",
+  },
+  {
+    name: "void-packages",
+    lang: "shell",
+    url: "https://github.com/jchook/void-packages",
+    desc: "Contributions to the Void Linux source packages collection.",
+  },
+];
+---
+
+<Base title="projects" description="Things I build and maintain.">
+  <h1 class="page-title">projects</h1>
+  <ul class="proj-grid">
+    {
+      projects.map((p) => (
+        <li class="proj" style={`--pc: ${tagColor(p.lang)}`}>
+          <a href={p.url}>
+            <span class="proj-head">
+              <span class="proj-name">{p.name}</span>
+              {p.stars && <span class="proj-stars">★ {p.stars}</span>}
+            </span>
+            <span class="proj-desc">{p.desc}</span>
+            <span class="proj-lang">{p.lang}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</Base>
+
+<style>
+  .proj-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: 1rem;
+  }
+  .proj a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    height: 100%;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--bg2);
+    border-left: 3px solid var(--pc);
+    background: var(--bg1);
+    color: var(--fg2);
+  }
+  .proj a:hover {
+    text-decoration: none;
+    border-color: var(--pc);
+  }
+  .proj-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .proj-name {
+    color: var(--fg0);
+    font-weight: 800;
+  }
+  .proj-stars {
+    color: var(--yellow);
+    font-size: 0.8rem;
+  }
+  .proj-desc {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .proj-lang {
+    color: var(--pc);
+    font-size: 0.78rem;
+  }
+</style>

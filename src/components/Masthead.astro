@@ -1,0 +1,92 @@
+---
+import Search from "./Search.tsx";
+
+const path = Astro.url.pathname;
+const nav = [
+  { href: "/posts/", label: "posts" },
+  { href: "/tags/", label: "tags" },
+  { href: "/projects/", label: "projects" },
+  { href: "/about/", label: "about" },
+];
+const isCurrent = (href: string) =>
+  path === href || (href !== "/" && path.startsWith(href));
+---
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="seal-rough" x="-15%" y="-15%" width="130%" height="130%">
+    <feTurbulence
+      type="fractalNoise"
+      baseFrequency="0.9"
+      numOctaves="3"
+      seed="11"
+      result="n"></feTurbulence>
+    <feDisplacementMap
+      in="SourceGraphic"
+      in2="n"
+      scale="1.4"
+      xChannelSelector="R"
+      yChannelSelector="G"></feDisplacementMap>
+  </filter>
+</svg>
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="brand" href="/" aria-label="jchook.com home">
+      <span class="speedstack" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i>
+      </span>
+      <span class="logo-badge" aria-hidden="true">
+        <!-- W and R fused into one carved seal monogram: the sideways W is
+             the Σ form, and its bottom bar doubles as the sideways R's stem —
+             bowl hanging right, leg kicking left. One glyph, chop-dense. -->
+        <svg viewBox="0 0 40 40" width="40" height="40">
+          <g
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4.6"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+          >
+            <path d="M33 8 H8.5 L21 15.5 L8.5 23 H33"></path>
+            <path d="M33 23 Q33 31.5 26.5 31.5 Q20 31.5 20 23"></path>
+            <path d="M20 23 L9.5 32.5"></path>
+          </g>
+        </svg>
+      </span>
+      <span class="site">jchook.com</span>
+    </a>
+    <nav class="mast-nav" aria-label="Main">
+      {
+        nav.map((n) => (
+          <a href={n.href} aria-current={isCurrent(n.href) ? "page" : undefined}>
+            <span class="tilde">~/</span>{n.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="mast-actions">
+      <Search client:load />
+      <a
+        href="https://github.com/jchook"
+        aria-label="GitHub"
+        title="github.com/jchook"
+      >
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+          />
+        </svg>
+      </a>
+      <a
+        href="https://www.linkedin.com/in/wesleyroberts42"
+        aria-label="LinkedIn"
+        title="linkedin.com/in/wesleyroberts42"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13Zm1.78 13.02H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"
+          />
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>

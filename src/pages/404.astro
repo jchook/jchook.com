@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="404" description="Page not found.">
+  <div class="nf">
+    <p class="nf-line">
+      <span class="caret">❯</span> cat {`{page}`}
+    </p>
+    <p class="nf-err">cat: no such file or directory (404)</p>
+    <p><a href="/">cd ~</a></p>
+  </div>
+</Base>
+
+<style>
+  .nf {
+    padding: 4rem 0;
+    max-width: var(--prose-w);
+  }
+  .nf-line .caret {
+    color: var(--green);
+    font-weight: 800;
+  }
+  .nf-err {
+    color: var(--red);
+  }
+</style>

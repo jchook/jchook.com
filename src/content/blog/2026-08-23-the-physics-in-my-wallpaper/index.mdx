@@ -1,0 +1,52 @@
+---
+title: "The physics in my wallpaper"
+date: 2026-08-23 16:20:00
+tags: [physics, math, rice]
+description: "My desktop wallpaper is the Balmer series of hydrogen, recolored to gruvbox. Here's the actual math behind those six little bars — with a live Bohr model."
+---
+
+import BalmerScene from "../../../components/demos/BalmerScene.tsx";
+
+My wallpaper is six rounded bars on a black field. People assume it's abstract
+art. It's not — it's the **emission spectrum of hydrogen**, remixed into
+gruvbox. Every time an electron in a hydrogen atom falls from a higher orbit
+down to the second one, it spits out a photon at one of a handful of exact
+wavelengths. Those are the bars.
+
+The wavelengths come from the Rydberg formula:
+
+$$
+\frac{1}{\lambda} = R_H \left( \frac{1}{2^2} - \frac{1}{n^2} \right),
+\qquad n = 3, 4, 5, \ldots
+$$
+
+with $R_H \approx 1.097 \times 10^7\,\text{m}^{-1}$. Plug in the first few
+values of $n$ and you get the visible lines — the **Balmer series**:
+
+| transition | name | $\lambda$ |
+| ---------- | ---- | --------- |
+| $3 \to 2$  | H-α  | 656 nm (red) |
+| $4 \to 2$  | H-β  | 486 nm (aqua-ish) |
+| $5 \to 2$  | H-γ  | 434 nm (blue) |
+| $6 \to 2$  | H-δ  | 410 nm (violet) |
+
+Here's the whole mechanism, gruvboxed. Watch the electron fall to $n = 2$ and
+fire off the corresponding line:
+
+<BalmerScene client:visible />
+
+The $\frac{1}{2^2}$ is the whole story of why this series is *visible*.
+Transitions down to $n = 1$ (the Lyman series) are ultraviolet; down to
+$n = 3$ (Paschen) is infrared. Landing on the second shell happens to drop
+photons right into the narrow band our eyes evolved to catch.
+
+---
+
+The original wallpaper kept the physically accurate spacing and just took
+liberties with the colors. Which is very gruvbox of it: the palette isn't
+trying to be accurate either. It's trying to feel warm at 2am. Both goals are
+legitimate engineering constraints.
+
+If you want it: the wallpaper is in
+[my dotfiles](https://github.com/jchook), and the footer of this site is the
+same spectrum, same positions.
