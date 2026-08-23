@@ -1,0 +1,35 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - run: bun install --frozen-lockfile
+
+      # astro build + pagefind index (see package.json)
+      - run: bun run build
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          # texas host key, pinned
+          echo '198.58.99.247 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJwHN1CBUlyFz1eMs+ygE+adjbEKWqKHQYOxIq9YJnap' >> ~/.ssh/known_hosts
+
+      - name: Rsync to texas
+        # The deploy key is rrsync-restricted on the server, rooted at
+        # /var/www/jchook.com/htdocs — hence the bare ":/" destination.
+        run: rsync -az --delete dist/ jchook@198.58.99.247:/
