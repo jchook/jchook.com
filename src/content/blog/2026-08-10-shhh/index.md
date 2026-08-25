@@ -1,8 +1,8 @@
 ---
-title: "shhh: a Rust program that tells me to be quiet"
+title: "shhh: don't be so loud"
 date: 2026-08-10 22:15:00
 tags: [rust, audio, cli]
-description: "I talk too loud on calls. shhh watches the mic and yells at me (quietly) when I do."
+description: "shhh watches the mic and yells at me (quietly) when I get too loud."
 ---
 
 Apparently I get loud on calls when I'm excited. I found this out the way

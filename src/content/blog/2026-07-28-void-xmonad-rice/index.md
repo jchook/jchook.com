@@ -1,54 +1,46 @@
 ---
-title: "Anatomy of the rice: Void + xmonad + gruvbox"
+title: "My Linux setup: Void + Xmonad"
 date: 2026-07-28 14:05:00
 tags: [void, xmonad, rice, haskell, linux]
-description: "The parts list for my desktop: Void Linux, xmonad, kitty, polybar, and one palette to rule them all."
+description: "Every time I boot my computer I get a warm hug feeling from my color scheme."
 ---
 
-Every screenshot thread eventually asks for the parts list, so here it is.
-The theme of the build: **one palette, everywhere**. If a pixel is on my
-screen, it's one of the sixteen colors in my `kitty.conf`.
+Ricing out your Linux desktop is a [rite of passage](https://www.youtube.com/watch?v=qiQlZU5oWTQ).
+
+First you try Ubuntu (or YellowDog in my case on a 1999 Snow iMac 400Mhz). Then you pick a [distro](https://distrowatch.com/table.php?distribution=void) that fits you. Then you get your workflow happy.
+
+*Then you trick it out*.
 
 ## Base
 
-- **Void Linux** — runit instead of systemd, `xbps` is fast, and the base
-  install is genuinely minimal. My kind of distro: it does nothing until
-  asked.
-- **xmonad** — a window manager in ~30 lines of my own Haskell config, which
-  is exactly as much window manager as I need.
-- **kitty** with Inconsolata, 6px padding so text doesn't kiss the borders.
+- **Void Linux**
+  - Let's use [`runit`](https://github.com/g-pape/runit/pull/51). Systemd is not UNIX ([it sucks](https://suckless.org/sucks/systemd/)).
+  - Rolling release. No major version upgrades.
+  - Easy to learn and love.
+- **Xmonad**
+  - Turing complete config written in [Haskell](https://www.haskell.org/).
+  - In the age of LLMs few reasons could convince me not to use a code-as-config window manager.
+- **Alacritty**
+  - KISS term. GPU accelerated. Let my WM do the tabs and panes.
+  - Also got Kitty, which does [sixel](https://www.arewesixelyet.com/).
 
-## The config that matters
+## Gruvbox
 
-Most of my `xmonad.hs` is stock. The part that isn't:
+Want to feel the warm embrace of a 70s retro-futurism masterpiece? Try you a Gruvbox. This entire site is themed to look and feel like my Linux experience.
+
+![Rice Desktop](./2026-08-25-01-13-40.png)
+
+
+## Multiple workspaces
+
+With Xmonad, you get a real "mod" key and anything can be a workspace.
 
 ```haskell
-myLayout = smartBorders $ spacingRaw True
-    (Border 8 8 8 8) True (Border 8 8 8 8) True
-    $ Tall 1 (3/100) (1/2) ||| Full
-
-main = xmonad $ def
-    { terminal    = "kitty"
-    , modMask     = mod4Mask
-    , borderWidth = 2
-    , normalBorderColor  = "#3a3a3a"
-    , focusedBorderColor = "#ffaf00"
-    }
+myWorkspaces = [
+  " ~", " 1", " 2", " 3", " 4", " 5", " 6", " 7", " 8", " 9", " 0"
+  , " q", " w", " e", " a", " s"
+  , " ⇥", " ⇧"
+  ]
 ```
 
-Yellow focused border, gray unfocused. Two layouts. That's the whole
-ideology: the window manager should be a solved problem you stop thinking
-about.
-
-## Consistency is the aesthetic
-
-The actual trick to a rice that photographs well isn't any single component —
-it's that kitty, polybar, dunst, rofi, and the GTK theme all read from the
-same sixteen hex values. When a notification pops over a terminal over the
-wallpaper, nothing clashes, because nothing *can* clash.
-
-> Rice tip: pick the palette first, then make every tool conform to it.
-> Never theme a tool in isolation.
-
-This site runs on the same rule. The CSS palette is literally copied out of
-`kitty.conf` — the browser is just another window on the desktop.
+For example, `w` is for social interactions (weechat, signal, mutt, etc), `q` is for web browsing, `1` is for my main thing, `2` is for my other thing, `~` is my dotfiles or meta work, etc.
