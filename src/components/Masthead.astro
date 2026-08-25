@@ -35,19 +35,22 @@ const isCurrent = (href: string) =>
         <i></i><i></i><i></i><i></i><i></i><i></i>
       </span>
       <span class="logo-badge" aria-hidden="true">
-        <!-- W and R fused into one carved seal monogram: the sideways W is
-             the Σ form, and its bottom bar doubles as the sideways R's stem —
-             bowl hanging right, leg kicking left. Strokes are kaishu brush
-             shapes (filled, not stroked): press-end 横 bars, a flared 捺, and
-             撇 sweeps tapering to points. -->
+        <!-- W and R fused into one monogram with CJK-font proportions:
+             gridded, uniform stroke, near-square composition. The sideways W
+             is the Σ form, its bottom bar doubles as the sideways R's stem,
+             the bowl is a rounded box, and the foot kicks down-left at 45°
+             to match the bowl's size. -->
         <svg viewBox="0 0 40 40" width="40" height="40">
-          <g fill="currentColor" stroke="none">
-            <path d="M7.6 6.9 L29.6 5.5 Q34 5 33.7 7.9 Q33.4 10.6 29.8 10 L8.4 10.9 Q6 8.9 7.6 6.9 Z"></path>
-            <path d="M10 8.3 Q9 9.4 9.4 10.6 L20.9 17.2 Q23.6 18.3 24.1 16 Q24.5 14.2 22.5 13.2 L10 8.3 Z"></path>
-            <path d="M23.8 15 Q25.4 16.7 23.9 18.3 L10.2 25.2 L21.7 15.7 Q22.8 14.4 23.8 15 Z"></path>
-            <path d="M8.6 21.7 L30.2 20.9 Q34.4 20.4 33.9 23.2 Q33.5 26 29.9 25.4 L9.2 26.1 Q6.9 23.9 8.6 21.7 Z"></path>
-            <path d="M34 22.4 Q35 33.8 26.2 33.6 Q17.6 33.4 17.7 25.2 L21 26.6 Q21.5 30.3 26.3 30.4 Q31.3 30.5 30.9 22.4 Z"></path>
-            <path d="M18.6 22.1 Q21.8 22.2 21.2 25 Q19.2 30 10.2 34.6 L9.4 33.7 Q16.1 28 17.6 22.8 Z"></path>
+          <g
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4.4"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+          >
+            <path d="M32.5 7 H8 L18.5 14 L8 21 H32.5"></path>
+            <path d="M32.5 21 V29.6 Q32.5 31.6 30.5 31.6 H23 Q21 31.6 21 29.6 V21"></path>
+            <path d="M21 22 L9.5 33.5"></path>
           </g>
         </svg>
       </span>
