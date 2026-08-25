@@ -1,9 +1,9 @@
 ---
-import Base from "../../layouts/Base.astro";
-import TagPill from "../../components/TagPill.astro";
-import { getPosts, allTags, type Post } from "../../lib/posts";
-import { formatPostDay } from "../../lib/dates";
-import { tagColor } from "../../lib/tags";
+import Base from "#src/layouts/Base.astro";
+import TagPill from "#src/components/TagPill.astro";
+import { getPosts, allTags, type Post } from "#src/lib/posts";
+import { formatPostDay } from "#src/lib/dates";
+import { tagColor } from "#src/lib/tags";
 
 export async function getStaticPaths() {
   const posts = await getPosts();

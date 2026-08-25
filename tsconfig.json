@@ -2,7 +2,15 @@
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist"],
+  "mdx": {
+    "checkMdx": true,
+    "plugins": ["remark-frontmatter", "remark-gfm", "remark-math"]
+  },
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#src/*": ["src/*"]
+    },
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "types": ["@types/bun"]

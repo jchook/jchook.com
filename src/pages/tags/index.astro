@@ -1,7 +1,7 @@
 ---
-import Base from "../../layouts/Base.astro";
-import TagPill from "../../components/TagPill.astro";
-import { getPosts, allTags } from "../../lib/posts";
+import Base from "#src/layouts/Base.astro";
+import TagPill from "#src/components/TagPill.astro";
+import { getPosts, allTags } from "#src/lib/posts";
 
 const tags = allTags(await getPosts());
 ---

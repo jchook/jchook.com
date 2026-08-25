@@ -1,10 +1,10 @@
 ---
 import { render } from "astro:content";
-import Base from "../../layouts/Base.astro";
-import PostHeader from "../../components/PostHeader.astro";
-import Pager from "../../components/Pager.astro";
-import Sidebar from "../../components/Sidebar.astro";
-import { getPosts, neighborsOf, relatedTo, type Post } from "../../lib/posts";
+import Base from "#src/layouts/Base.astro";
+import PostHeader from "#src/components/PostHeader.astro";
+import Pager from "#src/components/Pager.astro";
+import Sidebar from "#src/components/Sidebar.astro";
+import { getPosts, neighborsOf, relatedTo, type Post } from "#src/lib/posts";
 
 export async function getStaticPaths() {
   const posts = await getPosts();

@@ -1,8 +1,8 @@
 ---
-import Base from "../../layouts/Base.astro";
-import TagPill from "../../components/TagPill.astro";
-import { getPosts } from "../../lib/posts";
-import { formatPostDay } from "../../lib/dates";
+import Base from "#src/layouts/Base.astro";
+import TagPill from "#src/components/TagPill.astro";
+import { getPosts } from "#src/lib/posts";
+import { formatPostDay } from "#src/lib/dates";
 
 const posts = await getPosts();
 const byYear = new Map<string, typeof posts>();
