@@ -125,30 +125,8 @@ a:hover {
   align-items: stretch;
   gap: var(--mast-gap);
   height: var(--mast-h);
-  padding-right: 2rem; /* matches .shell side padding */
+  padding: 0 2rem; /* matches .shell side padding */
 }
-
-/* the speed-stack: hydrogen spectral lines, italicized into racing
-   quadrilaterals, bleeding off the left edge of the screen */
-.speedstack {
-  display: flex;
-  align-items: stretch;
-  align-self: stretch;
-  flex-shrink: 0;
-  margin-left: -0.5rem;
-  transform: skewX(-18deg);
-}
-.speedstack i {
-  display: block;
-  width: 0.5rem;
-  height: 100%;
-}
-.speedstack i:nth-child(1) { background: var(--blue); margin-right: 1.4rem; }
-.speedstack i:nth-child(2) { background: var(--red); margin-right: 0.7rem; }
-.speedstack i:nth-child(3) { background: var(--yellow); margin-right: 0.28rem; }
-.speedstack i:nth-child(4) { background: var(--fg0); margin-right: 0.28rem; }
-.speedstack i:nth-child(5) { background: var(--green); margin-right: 0.28rem; }
-.speedstack i:nth-child(6) { background: var(--aqua); }
 
 .brand {
   display: flex;
@@ -903,9 +881,8 @@ a:hover {
     flex-wrap: wrap;
     height: auto;
     gap: 0.25rem var(--mast-gap);
-    padding-right: 1.25rem; /* matches mobile .shell side padding */
+    padding: 0 1.25rem; /* matches mobile .shell side padding */
   }
-  .speedstack,
   .brand {
     align-self: auto;
     height: var(--mast-h);
@@ -920,8 +897,7 @@ a:hover {
     order: 3;
     flex-basis: 100%;
     margin-left: 0;
-    /* left-aligns the nav row with the page content below it */
-    padding: 0 0 0.8rem 1.25rem;
+    padding: 0 0 0.8rem;
     gap: 1.1rem;
   }
   .post-header {
