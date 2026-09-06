@@ -1,0 +1,91 @@
+---
+/**
+ * A Celsius ⇄ Fahrenheit band: skewed gruvbox blocks cut by slash-shaped
+ * gaps (same -18° lean as the masthead speed-stack). The slashes are the
+ * tick marks — Celsius reads above each one, Fahrenheit below.
+ */
+interface Props {
+  /** Celsius tick values; tick i sits on the slash after block i (the
+   *  last one lands on the band's right edge when ticks and colors are
+   *  the same length). */
+  ticks?: number[];
+  /** One colour token per block. */
+  colors?: string[];
+}
+
+const {
+  ticks = [0, 10, 20, 30, 40],
+  colors = ["--blue", "--aqua", "--green", "--yellow", "--red"],
+} = Astro.props;
+
+const toF = (c: number) => Math.round((c * 9) / 5 + 32);
+const segs = colors.length;
+const at = (i: number) => `${((i + 1) / segs) * 100}%`;
+const atEnd = (i: number) => i + 1 >= segs;
+const label = ticks.map((c) => `${c}°C is ${toF(c)}°F`).join(", ");
+---
+
+<figure class="tempscale" role="img" aria-label={`Celsius to Fahrenheit: ${label}`}>
+  <div class="row" aria-hidden="true">
+    <span class="unit">°C</span>
+    {ticks.map((c, i) => <b class:list={{ end: atEnd(i) }} style={`--at:${at(i)}`}>{c}</b>)}
+  </div>
+  <div class="band" aria-hidden="true">
+    {colors.map((c) => <i style={`background:var(${c})`}></i>)}
+  </div>
+  <div class="row" aria-hidden="true">
+    <span class="unit">°F</span>
+    {ticks.map((c, i) => <b class:list={{ end: atEnd(i) }} style={`--at:${at(i)}`}>{toF(c)}</b>)}
+  </div>
+</figure>
+
+<style>
+  .tempscale {
+    --lean: 18deg;
+    --h: 2.1rem;
+    /* the skew throws the end blocks past the flex box by tan(lean)·h/2 */
+    --overhang: 0.36rem;
+    margin: 2.25rem 0;
+    padding: 0 var(--overhang);
+    font-variant-numeric: tabular-nums;
+  }
+  .row {
+    position: relative;
+    height: 1.7rem;
+    line-height: 1.7rem;
+  }
+  .row b {
+    position: absolute;
+    left: var(--at);
+    transform: translateX(-50%);
+    font-weight: 700;
+    color: var(--fg0);
+  }
+  /* a tick on the band's edge has no slash to centre on — flush it */
+  .row b.end {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+  /* fahrenheit is the footnote */
+  .row:last-child b {
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .unit {
+    position: absolute;
+    left: 0;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .band {
+    display: flex;
+    gap: 0.45rem;
+    height: var(--h);
+  }
+  .band i {
+    flex: 1;
+    display: block;
+    transform: skewX(calc(-1 * var(--lean)));
+  }
+</style>

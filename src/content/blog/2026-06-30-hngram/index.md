@@ -1,47 +1,27 @@
 ---
-title: "hngram: charting Hacker News obsessions"
+title: "Hacker News n-gram viewer"
 date: 2026-06-30 19:55:00
 tags: [rust, data, hn]
-description: "An n-gram viewer over the entire Hacker News corpus. Watch 'crypto' rise and fall like an empire."
+description: "An n-gram viewer over the entire Hacker News corpus. Visualize topic trends on HN."
 ---
 
-Google's Ngram Viewer, but for Hacker News titles.
-[hngram](https://github.com/jchook/hngram) ingests the full HN corpus and
-charts how often a phrase appears over time. It answers important questions
-like *when exactly did everyone stop saying "web 2.0"* (2011, with a long
-tail of irony).
+Google's Ngram Viewer, but for [Hacker News](https://news.ycombinator.com/) posts and comments.
 
-## The pipeline
+In true HN style, it's fully open-source at
+[jchook/hngram](https://github.com/jchook/hngram). Also hosted at [hngram.com](https://hngram.com/).
 
-The corpus is ~40M items from the BigQuery public dataset. Rust chews through
-it in one pass:
+It answers questions like "When did everyone stop saying Web 2.0?" or "When did Rust become more talked-about than Python?"
 
-```rust
-for title in titles {
-    let tokens: Vec<&str> = tokenize(&title);
-    for n in 1..=3 {
-        for gram in tokens.windows(n) {
-            let key = gram.join(" ");
-            counts
-                .entry((key, bucket_of(item.time)))
-                .and_modify(|c| *c += 1)
-                .or_insert(1);
-        }
-    }
-}
-```
+## What is an n-gram?
 
-Monthly buckets, counts normalized against total tokens per bucket so a
-growing site doesn't make every line go up and to the right.
+An n-gram is just a phrase with n words. So, "Harambe" is a 1-gram, "Void Linux" is a 2-gram, and "root of all evil" is a 4-gram.
 
-## Findings, free of charge
+HNgram supports up to 5-grams.
 
-- **"rust"** crosses **"haskell"** permanently in 2015 and never looks back.
-- **"ai"** has two lives: a small hill in the 2016 deep-learning wave, then a
-  cliff face starting late 2022 that makes the first hill invisible at scale.
-- **"show hn"** is the most stable bigram in the corpus. Builders gonna
-  build, in every market.
+## Optimizations
 
-The lesson from staring at these curves: HN doesn't discover technologies,
-it *synchronizes* on them. The first mention is always years before the
-spike. Whatever the next spike is, someone already posted it to two upvotes.
+It was challenging to work with a dataset of this size. I did a lot of fun optimizations with this project that I'd love to write about, but that will have to be on another day.
+
+> [!NOTE]
+> Vote for your favorite phrase comparisons and we will add them to the suggestions.
+

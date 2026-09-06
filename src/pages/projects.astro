@@ -2,76 +2,145 @@
 import Base from "#src/layouts/Base.astro";
 import { tagColor } from "#src/lib/tags";
 
-const projects = [
+const sections = [
   {
-    name: "ranger-zoxide",
-    lang: "python",
-    stars: 139,
-    url: "https://github.com/jchook/ranger-zoxide",
-    desc: "Jump between common directories in ranger with zoxide.",
+    title: "flagships",
+    projects: [
+      {
+        name: "Freed.ai",
+        tag: "healthcare · ai",
+        url: "https://www.freed.ai",
+        desc: "An AI-first EHR with automatic SOAP note generation.",
+      },
+      {
+        name: "Zinc.email",
+        tag: "email · open source",
+        url: "https://zinc.email",
+        desc: "An open-source email proxy service.",
+      },
+      {
+        name: "HelloPrivacy.com",
+        tag: "privacy · infrastructure",
+        url: "https://helloprivacy.com",
+        desc: "Privacy infrastructure serving tens of millions of users through partners including Experian, Discover, and McAfee. I architected the API and scaled the infrastructure.",
+      },
+    ],
   },
   {
-    name: "shhh",
-    lang: "rust",
-    stars: 3,
-    url: "https://github.com/jchook/shhh",
-    desc: "Alerts you when you are too loud. A noise meter for your mic.",
+    title: "open source",
+    projects: [
+      {
+        name: "ranger-zoxide",
+        tag: "python",
+        url: "https://github.com/jchook/ranger-zoxide",
+        desc: "Jump between common directories in ranger with zoxide.",
+      },
+      {
+        name: "shhh",
+        tag: "rust",
+        url: "https://github.com/jchook/shhh",
+        desc: "Alerts you when you are too loud. A noise meter for your mic.",
+      },
+      {
+        name: "rewait",
+        tag: "javascript",
+        url: "https://github.com/jchook/rewait",
+        desc: "Wait for resources to become available — HTTP, TCP, sockets, files, or custom functions.",
+      },
+      {
+        name: "hngram",
+        tag: "rust",
+        url: "https://github.com/jchook/hngram",
+        desc: "Hacker News n-gram viewer.",
+      },
+      {
+        name: "caption-tui",
+        tag: "typescript",
+        url: "https://github.com/jchook/caption-tui",
+        desc: "Terminal-based image dataset captioning tool.",
+      },
+    ],
   },
   {
-    name: "rewait",
-    lang: "javascript",
-    stars: 4,
-    url: "https://github.com/jchook/rewait",
-    desc: "Wait for resources to become available — http, tcp, sockets, files, custom functions.",
+    title: "forks",
+    projects: [
+      {
+        name: "SCFusion",
+        tag: "c++",
+        url: "https://github.com/jchook/SCFusion",
+        desc: "Ported this StarCraft II genetic build-order generator from Windows to macOS and Linux, and updated it for the latest game patches.",
+      },
+      {
+        name: "void-packages",
+        tag: "shell",
+        url: "https://github.com/jchook/void-packages",
+        desc: "My contributions to the Void Linux package collection, where I maintain a small set of packages.",
+      },
+      {
+        name: "qs",
+        tag: "javascript",
+        url: "https://github.com/jchook/qs",
+        desc: "Added support for leaving selected RFC-permitted characters unescaped, producing clean query strings like ?list=a,b,c,d.",
+      },
+    ],
   },
   {
-    name: "hngram",
-    lang: "rust",
-    url: "https://github.com/jchook/hngram",
-    desc: "Hacker News n-gram viewer.",
-  },
-  {
-    name: "caption-tui",
-    lang: "typescript",
-    url: "https://github.com/jchook/caption-tui",
-    desc: "Terminal-based image dataset captioning tool.",
-  },
-  {
-    name: "SCFusion",
-    lang: "cpp",
-    url: "https://github.com/jchook/SCFusion",
-    desc: "StarCraft 2 genetic build-order generator.",
-  },
-  {
-    name: "void-packages",
-    lang: "shell",
-    url: "https://github.com/jchook/void-packages",
-    desc: "Contributions to the Void Linux source packages collection.",
+    title: "legacy",
+    projects: [
+      {
+        name: "CowFight.com",
+        tag: "security · hacking",
+        url: "https://cowfight.com",
+        desc: "A security and hacking team active from 1998 to 2004.",
+      },
+    ],
   },
 ];
 ---
 
-<Base title="projects" description="Things I build and maintain.">
+<Base title="projects" description="Selected products and open-source work by Wes Roberts.">
   <h1 class="page-title">projects</h1>
-  <ul class="proj-grid">
+  <div class="project-sections">
     {
-      projects.map((p) => (
-        <li class="proj" style={`--pc: ${tagColor(p.lang)}`}>
-          <a href={p.url}>
-            <span class="proj-head">
-              <span class="proj-name">{p.name}</span>
-              {p.stars && <span class="proj-stars">★ {p.stars}</span>}
-            </span>
-            <span class="proj-desc">{p.desc}</span>
-            <span class="proj-lang">{p.lang}</span>
-          </a>
-        </li>
+      sections.map((section) => (
+        <section class="project-section" aria-labelledby={`section-${section.title.replace(" ", "-")}`}>
+          <h2 id={`section-${section.title.replace(" ", "-")}`}>{section.title}</h2>
+          <ul class="proj-grid">
+            {section.projects.map((project) => (
+              <li class="proj" style={`--pc: ${tagColor(project.tag)}`}>
+                <a href={project.url}>
+                  <span class="proj-name">{project.name}</span>
+                  <span class="proj-desc">{project.desc}</span>
+                  <span class="proj-tag">{project.tag}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
       ))
     }
-  </ul>
+  </div>
 </Base>
 
 <style>
+  .project-sections {
+    display: grid;
+    gap: 3.25rem;
+  }
+  .project-section h2 {
+    margin: 0 0 1rem;
+    color: var(--fg0);
+    font-size: 1.25rem;
+    font-stretch: 115%;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    word-spacing: -0.35em;
+  }
+  .project-section h2::before {
+    content: "./";
+    margin-right: 0.35em;
+    color: var(--yellow);
+  }
   .proj-grid {
     list-style: none;
     margin: 0;
@@ -95,25 +164,16 @@ const projects = [
     text-decoration: none;
     border-color: var(--pc);
   }
-  .proj-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-  }
   .proj-name {
     color: var(--fg0);
     font-weight: 800;
-  }
-  .proj-stars {
-    color: var(--yellow);
-    font-size: 0.8rem;
   }
   .proj-desc {
     font-size: 0.88rem;
     line-height: 1.5;
     flex: 1;
   }
-  .proj-lang {
+  .proj-tag {
     color: var(--pc);
     font-size: 0.78rem;
   }

@@ -2,18 +2,30 @@
 title: "shhh: don't be so loud"
 date: 2026-08-10 22:15:00
 tags: [rust, audio, cli]
-description: "shhh watches the mic and yells at me (quietly) when I get too loud."
+description: "shhh watches the mic and shushes me when I get too loud."
 ---
 
-Apparently I get loud on calls when I'm excited. I found this out the way
-everyone does — someone told me, months too late. So I wrote
-[shhh](https://github.com/jchook/shhh): a small Rust daemon that watches the
-microphone level and alerts me when I cross a threshold.
+Sometimes you are living with other people, who are not night owls, and you have your headphones on, and you don't realize how loud you are.
+
+So I wrote [shhh](https://github.com/jchook/shhh): a small Rust daemon that watches the
+microphone level and literally says *SHHH!* when I am too loud.
 
 ## Measuring loudness
 
-Raw sample amplitude is too twitchy to alert on. shhh computes RMS over a
-sliding window instead:
+This part was very interesting.
+
+Decibels are a logarithmic unit. The reason why is that your ears hear this
+way. Six decibel louder is literally 2x the amplitude. So 16 dB is *physically*
+twice as big a sound wave as 10 dB, but your body "does the math" and your
+ear-brain system has a very strongly non-linear perception of loudness, close
+to logarithmic.
+
+"Being loud" is harder to define and capture than most would think. Mics hear
+something different from you (e.g. bumping the table can be existential for the
+mic, but quiet to you). Raw samples are wayyyy too spiky to alert on. You get a
+constant shush.
+
+`shhh` computes RMS over a sliding window instead:
 
 ```rust
 fn rms(samples: &[f32]) -> f32 {
@@ -22,7 +34,7 @@ fn rms(samples: &[f32]) -> f32 {
 }
 ```
 
-…then converts to dBFS so the threshold is in units that mean something:
+then converts to dBFS so the threshold is in familiar units:
 
 ```rust
 let db = 20.0 * rms.max(1e-9).log10();
@@ -31,18 +43,3 @@ if db > args.threshold {
 }
 ```
 
-Audio capture is [cpal](https://github.com/RustAudio/cpal), which was the
-easy part. The fiddly part was debouncing: a single laugh shouldn't fire the
-alert, but thirty seconds of escalating enthusiasm should. The rule that
-stuck: alert only if the rolling average stays hot for a few seconds, then go
-quiet for a cooldown period so it doesn't nag.
-
-## Does it work
-
-Yes, annoyingly well. The notification pops via dunst in the corner of my
-xmonad setup, styled like everything else on the desktop. It has genuinely
-changed my call behavior, in the way that a graph of your own bad habit
-always does.
-
-It's a ~300 line program. Sometimes the fix for a human problem is a very
-small robot with one opinion.

@@ -439,6 +439,88 @@ a:hover {
 .prose blockquote > :last-child {
   margin-bottom: 0;
 }
+
+/* ---- callouts ------------------------------------------------------
+   GitHub's five alert types (> [!NOTE] …) rendered by rehype-callouts,
+   which emits a .callout blockquote carrying [data-callout="<type>"].
+   Each type owns one gruvbox accent, mapped to GitHub's semantics:
+   note blue, tip green, important purple, warning yellow, caution red.
+   The rule and the title share --callout, so a new type needs one line. */
+
+/* Owns its whole box rather than leaning on .prose blockquote: the
+   collapsible form is a <details>, so it would inherit none of it. */
+.prose .callout {
+  --callout: var(--bg3);
+  margin: 2.25rem 0;
+  padding: 0.25rem 0 0.25rem 1.4rem;
+  border-left: 3px solid var(--callout);
+  color: var(--fg1);
+}
+.prose .callout[data-callout="note"] {
+  --callout: var(--blue);
+}
+.prose .callout[data-callout="tip"] {
+  --callout: var(--aqua);
+}
+.prose .callout[data-callout="important"] {
+  --callout: var(--magenta);
+}
+.prose .callout[data-callout="warning"] {
+  --callout: var(--yellow);
+}
+.prose .callout[data-callout="caution"] {
+  --callout: var(--red);
+}
+
+/* The eyebrow voice, tinted — quiet label, same as .eyebrow elsewhere.
+   Flex so the collapsible form's chevron sits with the text. */
+.prose .callout-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5ch;
+  font-stretch: 95%;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  color: var(--callout);
+  margin-bottom: 0.6rem;
+}
+/* Markdown is allowed in titles; keep inline code from shouting. */
+.prose .callout-title code {
+  font-size: 1em;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* .prose > * spaces only direct children; the content sits a level in. */
+.prose .callout-content > * {
+  margin-block: 0 1rem;
+}
+.prose .callout-content > :last-child {
+  margin-bottom: 0;
+}
+
+/* Collapsible form (> [!NOTE]- …): <summary> is the title, and the plugin
+   supplies its own chevron — hide the native marker, spin theirs on open. */
+.prose .callout summary {
+  cursor: pointer;
+  list-style: none;
+}
+.prose .callout summary::-webkit-details-marker {
+  display: none;
+}
+.prose .callout-fold-icon {
+  display: flex;
+  transition: transform 0.15s ease;
+}
+.prose .callout[open] .callout-fold-icon {
+  transform: rotate(180deg);
+}
+/* Closed, the title is the whole box — don't leave a hanging gap. */
+.prose .callout:not([open]) summary.callout-title {
+  margin-bottom: 0;
+}
 .prose ul,
 .prose ol {
   padding-left: 1.5rem;

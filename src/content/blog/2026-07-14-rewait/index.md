@@ -1,24 +1,21 @@
 ---
-title: "rewait: wait for things properly"
+title: "rewait: wait for bootup properly"
 date: 2026-07-14 11:30:00
 tz: Europe/Berlin
-tags: [javascript, cli, docker]
-description: "Every docker-compose setup eventually needs to wait for postgres. rewait waits for http, tcp, sockets, files, or any custom check."
+tags: [typescript, cli, docker]
+description: "Every docker-compose setup eventually needs to wait for the database. rewait waits for http, tcp, sockets, files, or any custom check."
 ---
 
-Written from a café in Berlin, which is why this post is stamped CEST — the
-blog supports per-post timezones because I refuse to lie about when things
-happened.
+Any networked software project hits a similar obstacle: the app boots faster than the
+database, crashes, and someone adds `sleep 5` or `npx wait-on`, etc.
 
-Every containerized project hits the same wall: the app boots faster than the
-database, crashes, and someone adds `sleep 5` to the entrypoint. Then `sleep
-10`. [rewait](https://github.com/jchook/rewait) is the grown-up version:
+[rewait](https://github.com/jchook/rewait) gives you fine-tuned control over this obstacle, either via simple &amp; familiar TypeScript, or CLI.
 
 ```js
 import { rewait, http, tcp } from "rewait";
 
 await rewait([
-  http("http://localhost:8080/healthz"),
+  http("http://localhost:8080/"),
   tcp("localhost", 5432),
 ], {
   timeout: 30_000,
@@ -26,21 +23,10 @@ await rewait([
 });
 ```
 
-It resolves when everything is up, or throws when the timeout hits. Checks
-run in parallel, retry on an interval, and you can hand it any async function
-as a custom check:
+I wrote this package many years ago for [Hello Privacy](https://helloprivacy.com/) in pure JS, and it really solved a need for us back then. The existing tooling didn't offer enough control or a clean enough API. So I wrote a nice clean functional programming API.
 
-```js
-const migrated = async () => {
-  const { rows } = await db.query("select 1 from schema_migrations limit 1");
-  if (!rows.length) throw new Error("not migrated yet");
-};
+In 2022 I rewrote it in TypeScript for my own use, but never released it.
 
-await rewait([tcp("localhost", 5432), migrated]);
-```
+Now the 2.x is [fully released on npm](https://www.npmjs.com/package/rewait) with 100% test coverage and no funny business with the static type analysis.
 
-The design rule I kept: **checks are just functions that throw**. No plugin
-API, no config schema, no DSL. The built-ins (`http`, `tcp`, `socket`,
-`file`) are conveniences that return such functions.
 
-`sleep 5` will outlive us all. But my containers boot in the right order.
