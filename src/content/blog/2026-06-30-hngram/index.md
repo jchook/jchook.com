@@ -1,5 +1,5 @@
 ---
-title: "Hacker News n-gram viewer"
+title: "Hacker News n-gram viewer."
 date: 2026-06-30 19:55:00
 tags: [rust, data, hn]
 description: "An n-gram viewer over the entire Hacker News corpus. Visualize topic trends on HN."

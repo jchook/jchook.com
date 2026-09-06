@@ -1,5 +1,5 @@
 ---
-title: "My Linux Rice"
+title: "My Linux rice."
 date: 2026-07-28 14:05:00
 tags: [void, xmonad, rice, haskell, linux]
 description: "Every time I boot my computer I get a warm hug feeling from my color scheme."

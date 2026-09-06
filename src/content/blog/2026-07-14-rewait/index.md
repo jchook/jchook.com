@@ -1,5 +1,5 @@
 ---
-title: "rewait: wait for bootup properly"
+title: "rewait: wait for shit properly."
 date: 2026-07-14 11:30:00
 tz: Europe/Berlin
 tags: [typescript, cli, docker]

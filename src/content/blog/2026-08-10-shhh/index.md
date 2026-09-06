@@ -1,5 +1,5 @@
 ---
-title: "shhh: don't be so loud"
+title: "shhh: don't be so loud."
 date: 2026-08-10 22:15:00
 tags: [rust, audio, cli]
 description: "shhh watches the mic and shushes me when I get too loud."
