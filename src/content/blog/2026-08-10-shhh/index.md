@@ -5,7 +5,8 @@ tags: [rust, audio, cli]
 description: "shhh watches the mic and shushes me when I get too loud."
 ---
 
-Sometimes you are living with other people, who are not night owls, and you have your headphones on, and you don't realize how loud you are.
+Sometimes you are living near other people (who are not night owls) and you
+have your headphones on, and you don't realize how loud you are.
 
 So I wrote [shhh](https://github.com/jchook/shhh): a small Rust daemon that watches the
 microphone level and literally says *SHHH!* when I am too loud.
@@ -14,11 +15,10 @@ microphone level and literally says *SHHH!* when I am too loud.
 
 This part was very interesting.
 
-Decibels are a logarithmic unit. The reason why is that your ears hear this
-way. Six decibel louder is literally 2x the amplitude. So 16 dB is *physically*
-twice as big a sound wave as 10 dB, but your body "does the math" and your
-ear-brain system has a very strongly non-linear perception of loudness, close
-to logarithmic.
+Decibels (dB) are a logarithmic unit. This is because you hear loudness roughly
+the samy way. 3 dB louder is literally 2x the energy. So 9 dB is *physically*
+twice as energetic as 6 dB, but your ear-brain system "does the math" and has a
+very strongly non-linear perception of loudness.
 
 "Being loud" is harder to define and capture than most would think. Mics hear
 something different from you (e.g. bumping the table can be existential for the
@@ -42,4 +42,9 @@ if db > args.threshold {
     notify("shhh", "you're doing it again");
 }
 ```
+
+## Always on
+
+I just put `shhh` in my `~/.xsessionrc` so it starts at boot. Done. Neighbors are happy.
+
 

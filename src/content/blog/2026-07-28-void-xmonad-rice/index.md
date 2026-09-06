@@ -1,5 +1,5 @@
 ---
-title: "My Linux setup: Void + Xmonad"
+title: "My Linux Rice"
 date: 2026-07-28 14:05:00
 tags: [void, xmonad, rice, haskell, linux]
 description: "Every time I boot my computer I get a warm hug feeling from my color scheme."
@@ -7,9 +7,9 @@ description: "Every time I boot my computer I get a warm hug feeling from my col
 
 Ricing out your Linux desktop is a [rite of passage](https://www.youtube.com/watch?v=qiQlZU5oWTQ).
 
-First you try Ubuntu (or YellowDog in my case on a 1999 Snow iMac 400Mhz). Then you pick a [distro](https://distrowatch.com/table.php?distribution=void) that fits you. Then you get your workflow happy.
+First you try a [distro](https://distrowatch.com/table.php?distribution=void) that fits you, you get your workflow happy, etc.
 
-*Then you trick it out*.
+[*Then you trick it out*](https://www.reddit.com/r/unixporn/).
 
 ## Base
 
@@ -18,8 +18,8 @@ First you try Ubuntu (or YellowDog in my case on a 1999 Snow iMac 400Mhz). Then 
   - Rolling release. No major version upgrades.
   - Easy to learn and love.
 - **Xmonad**
-  - Turing complete config written in [Haskell](https://www.haskell.org/).
-  - In the age of LLMs few reasons could convince me not to use a code-as-config window manager.
+  - Turing complete config written in [Haskell](https://www.haskell.org/), one of the coolest languages of all time.
+  - In the age of LLMs few could convince me not to use a code-as-config window manager.
 - **Alacritty**
   - KISS term. GPU accelerated. Let my WM do the tabs and panes.
   - Also got Kitty, which does [sixel](https://www.arewesixelyet.com/).
